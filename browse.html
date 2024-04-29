@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Used Furniture Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6d7a3c, #2c3e50);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        .sidebar {
+            float: left;
+            width: 200px;
+            background: linear-gradient(135deg, #6d7a3c, #2c3e50);
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: right 0;;
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li a {
+            display: block;
+            padding: 10px 0;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar ul li:first-child {
+            text-align: left;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #f4f4f4;
+        }
+
+        .active {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        main {
+            float: left;
+            width: calc(100% - 240px);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .furniture-item {
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .furniture-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .furniture-item h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .furniture-item p {
+            margin: 10px 0;
+            color: #666;
+            font-size: 16px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Used Furniture Store</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>Categories</h2>
+            <ul>
+                <li><a href="#" class="active" onclick="displayFurnitureItems('All')">All</a></li>
+                <li><a href="#" onclick="displayFurnitureItems('Sofas')">Sofas</a></li>
+                <li><a href="#" onclick="displayFurnitureItems('Tables')">Tables</a></li>
+                <li><a href="#" onclick="displayFurnitureItems('Chairs')">Chairs</a></li>
+            </ul>
+        </div><br><br>
+
+        <main>
+            <div id="furniture-items" class="grid-container">
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Used Furniture Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const furnitureItems = [
+            { name: "Sofa", price: 300, condition: "Good", category: "Sofas" },
+            { name: "Table", price: 150, condition: "Fair", category: "Tables" },
+            { name: "Chair", price: 50, condition: "Excellent", category: "Chairs" },
+            { name: "Bed", price: 400, condition: "Like New", category: "Beds" },
+            { name: "Desk", price: 200, condition: "Good", category: "Desks" },
+            { name: "Bookshelf", price: 100, condition: "Fair", category: "Bookshelves" },
+            { name: "Dining Table", price: 250, condition: "Good", category: "Tables" },
+            { name: "Couch", price: 350, condition: "Fair", category: "Sofas" },
+            { name: "Coffee Table", price: 80, condition: "Excellent", category: "Tables" },
+            { name: "Armchair", price: 120, condition: "Good", category: "Chairs" }
+        ];
+
+        function displayFurnitureItems(category) {
+            const furnitureItemsContainer = document.getElementById("furniture-items");
+            furnitureItemsContainer.innerHTML = ""; 
+
+            const filteredItems = category === "All" ? furnitureItems : furnitureItems.filter(item => item.category === category);
+
+            filteredItems.forEach(item => {
+                furnitureItemsContainer.innerHTML += generateFurnitureItemHTML(item);
+            });
+        }
+
+        function generateFurnitureItemHTML(item) {
+            return `
+                <div class="furniture-item">
+                    <h2>${item.name}</h2>
+                    <p>Price: $${item.price}</p>
+                    <p>Condition: ${item.condition}</p>
+                    <button onclick="addToCart('${item.name}', ${item.price})">Add to Cart</button>
+                </div>
+            `;
+        }
+
+        function addToCart(name, price) {
+            const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+            const newItem = { name, price };
+            cartItems.push(newItem);
+            localStorage.setItem("cart", JSON.stringify(cartItems));
+            alert("Item added to cart!");
+        }
+
+        window.onload = function() {
+            displayFurnitureItems("All");
+        };
+    </script>
+</body>
+</html>

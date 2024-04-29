@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 36px;
+            text-align: center;
+        }
+
+        .cart-item {
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .cart-item h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .cart-item p {
+            margin: 10px 0;
+            color: #666;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Shopping Cart</h1>
+        <div id="cart-items">
+        </div>
+    </div>
+
+    <script>
+        const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+        const cartItemsContainer = document.getElementById("cart-items");
+        cartItemsContainer.innerHTML = ""; 
+
+        if (cartItems.length === 0) {
+            cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+        } else {
+            cartItems.forEach(item => {
+                cartItemsContainer.innerHTML += `
+                    <div class="cart-item">
+                        <h2>${item.name}</h2>
+                        <p>Price: $${item.price}</p>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>

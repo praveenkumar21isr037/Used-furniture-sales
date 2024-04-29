@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="furnitureApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Furniture Store - Customer Reviews</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-image: url('3.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .review {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .review h3 {
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+        .review p {
+            margin: 5px 0;
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="ReviewController" class="container">
+    <h1>Customer Reviews</h1>
+    <div ng-repeat="review in reviews" class="review">
+        <h3>{{ review.title }}</h3>
+        <p><strong>Rating:</strong> {{ review.rating }}</p>
+        <p>{{ review.comment }}</p>
+    </div>
+    <div ng-show="reviews.length === 0">
+        <p>No reviews yet. Be the first one to leave a review!</p>
+    </div>
+    <h2>Leave a Review</h2>
+    <form ng-submit="submitReview()" name="reviewForm">
+        <label for="title">Product:</label>
+        <input type="text" id="title" ng-model="newReview.title" required><br>
+        <span class="error" ng-show="reviewForm.title.$error.required">Title is required</span>
+        
+        <label for="rating">Rating:</label>
+        <select id="rating" ng-model="newReview.rating" required>
+            <option value="">Select Rating</option>
+            <option value="1">1 - Poor</option>
+            <option value="2">2 - Fair</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Very Good</option>
+            <option value="5">5 - Excellent</option>
+        </select><br>
+        <span class="error" ng-show="reviewForm.rating.$error.required">Rating is required</span>
+        
+        <label for="comment">Comment:</label><br>
+        <textarea id="comment" rows="4" ng-model="newReview.comment" required></textarea><br>
+        <span class="error" ng-show="reviewForm.comment.$error.required">Comment is required</span>
+        
+        <button type="submit">Submit Review</button>
+    </form>
+</div>
+
+<script>
+    var app = angular.module('furnitureApp', []);
+    
+    app.controller('ReviewController', function($scope, $window) {
+        $scope.reviews = [
+            { title: 'Great chair!', rating: 5, comment: 'Very comfortable and stylish.' },
+            { title: 'Poor quality', rating: 2, comment: 'Not as durable as I expected.' }
+        ];
+        
+        $scope.newReview = {};
+        
+        $scope.submitReview = function() {
+            $scope.reviews.push({
+                title: $scope.newReview.title,
+                rating: $scope.newReview.rating,
+                comment: $scope.newReview.comment
+            });
+            
+            $scope.newReview = {};
+            
+            $window.location.href = 'success.html';
+        };
+    });
+</script>
+
+</body>
+</html>

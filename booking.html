@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Used Furniture Sales - Booking Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100;
+            background-color: #f9f9f9;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            max-width: 90%;
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .error {
+            color: #ff0000;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 10px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button a {
+            text-decoration: none;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Booking Form</h2>
+
+        <form id="bookingForm">
+            <label for="itemName">Item Name:</label>
+            <input type="text" id="itemName" name="itemName" required>
+            <div class="error" id="itemNameError"></div>
+
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option value="" disabled selected>Select Category</option>
+                <option value="bed">Bed</option>
+                <option value="sofa">Sofa</option>
+                <option value="table">Table</option>
+            </select>
+            <div class="error" id="categoryError"></div>
+            
+            <label for="condition">Condition:</label>
+            <input type="text" id="condition" name="condition" required>
+            <div class="error" id="conditionError"></div>
+            
+            <label for="price">Price ($):</label>
+            <input type="number" id="price" name="price" required>
+            <div class="error" id="priceError"></div>
+            
+            <label for="sellerName">Your Name:</label>
+            <input type="text" id="sellerName" name="sellerName" required>
+            <div class="error" id="sellerNameError"></div>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <div class="error" id="emailError"></div>
+            
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+            <div class="error" id="phoneError"></div>
+
+            <label for="manufacturingYear">Manufacturing Year:</label>
+            <input type="number" id="manufacturingYear" name="manufacturingYear" required>
+            <div class="error" id="manufacturingYearError"></div>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+            <div class="error" id="locationError"></div>
+
+            <label for="message">Additional Information:</label>
+            <textarea id="message" name="message" rows="4"></textarea>
+            <div class="error" id="messageError"></div>
+            
+            <button type="button" id="submitBtn">Book Now</button>
+            <button><a href="index.html">HomePage</a></button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#submitBtn').on('click', function () {
+                submitForm();
+            });
+        });
+
+        function submitForm() {
+            $('.error').text('');
+
+            var itemName = $('#itemName').val();
+            var category = $('#category').val();
+            var condition = $('#condition').val();
+            var price = $('#price').val();
+            var sellerName = $('#sellerName').val();
+            var email = $('#email').val();
+            var phone = $('#phone').val();
+            var manufacturingYear = $('#manufacturingYear').val();
+            var location = $('#location').val();
+            var message = $('#message').val();
+
+            var isValid = true;
+
+            if (!itemName || !isAlpha(itemName)) {
+                showError('itemNameError', 'Item Name is required and should only contain alphabetical characters.');
+                isValid = false;
+            }
+            if (!category) {
+                showError('categoryError', 'Category is required.');
+                isValid = false;
+            }
+            if (!condition || !isAlpha(condition)) {
+                showError('conditionError', 'Condition is required and should only contain alphabetical characters.');
+                isValid = false;
+            }
+            if (isNaN(price) || price <= 0 || price.length !== 5) {
+                showError('priceError', 'Price must be a valid 5-digit positive number.');
+                isValid = false;
+            }
+            if (!sellerName) {
+                showError('sellerNameError', 'Your Name is required.');
+                isValid = false;
+            }
+            if (!email || !isValidEmail(email)) {
+                showError('emailError', 'Please enter a valid email address ending with .com or .edu.');
+                isValid = false;
+            }
+            if (!phone || !isValidPhoneNumber(phone)) {
+                showError('phoneError', 'Phone Number is required and should contain only numbers of length 10.');
+                isValid = false;
+            }
+            if (isNaN(manufacturingYear) || manufacturingYear <= 2000) {
+                showError('manufacturingYearError', 'Manufacturing Year must be a valid year above 2000.');
+                isValid = false;
+            }
+            if (!location) {
+                showError('locationError', 'Location is required.');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Add your form submission logic here
+                // For now, redirecting to another page
+                window.location.href="re.html";
+            }
+        }
+
+        function showError(id, message) {
+            $('#' + id).text(message);
+        }
+
+        function isAlpha(value) {
+            return /^[a-zA-Z]+$/.test(value);
+        }
+
+        function isValidEmail(email) {
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            var validEmail = emailRegex.test(email);
+            var validDomain = email.endsWith('.com') || email.endsWith('.edu');
+
+            return validEmail && validDomain;
+        }
+
+        function isValidPhoneNumber(phone) {
+            return /^\d{10}$/.test(phone);
+        }
+    </script>
+</body>
+</html>
